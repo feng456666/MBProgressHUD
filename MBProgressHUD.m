@@ -11,7 +11,7 @@
 
 CGFloat const MBProgressMaxOffset = 1000000.f;
 
-static const CGFloat MBDefaultPadding = 4.f;
+static const CGFloat MBDefaultPadding = 17.f;
 static const CGFloat MBDefaultLabelFontSize = 16.f;
 static const CGFloat MBDefaultDetailsLabelFontSize = 12.f;
 
@@ -549,7 +549,12 @@ static const CGFloat MBDefaultDetailsLabelFontSize = 12.f;
         NSMutableArray *minSizeConstraints = [NSMutableArray array];
         [minSizeConstraints addObject:[NSLayoutConstraint constraintWithItem:bezel attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationGreaterThanOrEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1.f constant:minimumSize.width]];
         [minSizeConstraints addObject:[NSLayoutConstraint constraintWithItem:bezel attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationGreaterThanOrEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1.f constant:minimumSize.height]];
+        
         [self applyPriority:997.f toConstraints:minSizeConstraints];
+      
+        NSLayoutConstraint *maxWidth = [NSLayoutConstraint constraintWithItem:bezel attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationLessThanOrEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1.f constant:180];
+        maxWidth.priority == 1000;
+        [minSizeConstraints addObject:maxWidth];
         [bezelConstraints addObjectsFromArray:minSizeConstraints];
     }
 
@@ -1169,7 +1174,7 @@ static const CGFloat MBDefaultDetailsLabelFontSize = 12.f;
 - (CGSize)intrinsicContentSize {
     // Only show if we have associated control events and a title
     if ((self.allControlEvents == 0) || ([self titleForState:UIControlStateNormal].length == 0))
-		return CGSizeZero;
+        return CGSizeZero;
     CGSize size = [super intrinsicContentSize];
     // Add some side padding
     size.width += 20.f;
